@@ -1,0 +1,169 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema",
+    "definitions": {
+        "projectMeta": {
+            "type": "object",
+            "description": "Project Metadata Reference",
+            "propertyNames": {
+                "$comment": "Regex bans any Version metadata",
+                "pattern": "^(?!omf:version\\.).*$"
+            },
+            "$ref": "#/definitions/projectMetaProperties"
+        },
+        "projectMetaProperties": {
+            "properties": {
+                "omf:project.src": {
+                    "type": "string",
+                    "format": "uri",
+                    "description": "URL where the Project Metadata can be found"
+                },
+                "omf:project.id": {
+                    "type": "string",
+                    "description": "ID of the Project"
+                },
+                "omf:project.name": {
+                    "type": "string",
+                    "description": "Name of the Project"
+                },
+                "omf:project.type": {
+                    "description": "Type of the Project",
+                    "enum": [
+                        "mod",
+                        "pack"
+                    ]
+                },
+                "omf:project.releaseDate": {
+                    "type": "integer",
+                    "description": "Unix timestamp for when the Project was initially released"
+                },
+                "omf:project.summary": {
+                    "type": "string",
+                    "description": "Short summary of the Project"
+                }
+            }
+        },
+        "versionMeta": {
+            "type": "object",
+            "description": "Version Metadata Reference",
+            "propertyNames": {
+                "$comment": "Regex bans any Project metadata",
+                "pattern": "^(?!omf:project\\.).*$"
+            },
+            "$ref": "#/definitions/versionMetaProperties"
+        },
+        "versionMetaProperties": {
+            "properties": {
+                "omf:version.src": {
+                    "type": "string",
+                    "format": "uri",
+                    "description": "URL where the Version Metadata can be found"
+                },
+                "omf:version.id": {
+                    "type": "string",
+                    "description": "ID of the Version"
+                },
+                "omf:version.name": {
+                    "type": "string",
+                    "description": "Name of the Version"
+                },
+                "omf:version.components": {
+                    "type": "object",
+                    "description": "Required components for the Version",
+                    "properties": {
+                        "minecraft": {
+                            "type": "string",
+                            "description": "Version of Minecraft"
+                        },
+                        "forge": {
+                            "type": "string",
+                            "description": "Version of Minecraft Forge"
+                        },
+                        "fabric-loader": {
+                            "type": "string",
+                            "description": "Version of Fabric Loader"
+                        },
+                        "quilt-loader": {
+                            "type": "string",
+                            "description": "Version of Quilt Loader"
+                        }
+                    }
+                },
+                "omf:version.dependencies": {
+                    "type": "object",
+                    "description": "Required dependencies for the Version",
+                    "additionalProperties": {
+                        "type": "object",
+                        "required": [
+                            "type"
+                        ],
+                        "properties": {
+                            "type": {
+                                "description": "Type of this dependency",
+                                "enum": [
+                                    "required",
+                                    "optional"
+                                ]
+                            },
+                            "meta": {
+                                "type": "object",
+                                "ref": "#/definitions/combinedMeta"
+                            }
+                        }
+                    }
+                },
+                "omf:version.releaseDate": {
+                    "type": "integer",
+                    "description": "Unix timestamp for when the Version was released"
+                },
+                "omf:version.changelog": {
+                    "type": "string",
+                    "description": "Changelog for the Version"
+                }
+            }
+        },
+        "combinedMeta": {
+            "type": "object",
+            "description": "Combined Metadata Reference",
+            "allOf": [
+                {
+                    "$ref": "#/definitions/projectMetaProperties"
+                },
+                {
+                    "$ref": "#/definitions/versionMetaProperties"
+                }
+            ]
+        },
+        "hashes": {
+            "type": "object",
+            "anyOf": [
+                {
+                    "required": [
+                        "sha1"
+                    ]
+                },
+                {
+                    "required": [
+                        "sha512"
+                    ]
+                }
+            ],
+            "properties": {
+                "sha1": {
+                    "description": "SHA1 hash",
+                    "minLength": 40,
+                    "maxLength": 40
+                },
+                "sha512": {
+                    "description": "SHA512 hash",
+                    "maxLength": 128,
+                    "minLength": 128
+                }
+            }
+        },
+        "fileSize": {
+            "type": "integer",
+            "description": "Size of this file",
+            "minimum": 1
+        }
+    }
+}

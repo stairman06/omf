@@ -1,0 +1,219 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema",
+    "required": [
+        "formatType",
+        "formatVersion"
+    ],
+    "definitions": {
+        "env": {
+            "type": "object",
+            "description": "Environment where this can be used",
+            "required": [
+                "client",
+                "server"
+            ],
+            "properties": {
+                "client": {
+                    "description": "Client side",
+                    "$ref": "#/definitions/envValue"
+                },
+                "server": {
+                    "description": "Server side",
+                    "$ref": "#/definitions/envValue"
+                }
+            }
+        },
+        "envValue": {
+            "enum": [
+                "required",
+                "optional",
+                "disallowed"
+            ]
+        }
+    },
+    "properties": {
+        "formatType": {
+            "const": "omf:pack"
+        },
+        "formatVersion": {
+            "const": 0
+        },
+        "components": {
+            "type": "object",
+            "description": "Required components for the Pack",
+            "required": [
+                "minecraft"
+            ],
+            "properties": {
+                "minecraft": {
+                    "description": "Version of Minecraft"
+                },
+                "forge": {
+                    "description": "Version of Minecraft Forge"
+                },
+                "fabric-loader": {
+                    "description": "Version of Fabric Loader"
+                },
+                "quilt-loader": {
+                    "description": "Version of Quilt Loader"
+                }
+            }
+        },
+        "files": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "required": [
+                    "fileType",
+                    "id",
+                    "hashes",
+                    "fileSize"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "string"
+                    },
+                    "downloads": {
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "format": "uri"
+                        },
+                        "minItems": 1
+                    },
+                    "local": {
+                        "type": "string"
+                    },
+                    "hashes": {
+                        "$ref": "meta.schema.json#/definitions/hashes"
+                    },
+                    "fileSize": {
+                        "$ref": "meta.schema.json#/definitions/fileSize"
+                    },
+                    "env": {
+                        "$ref": "#/definitions/env"
+                    },
+                    "groups": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "meta": {
+                        "$ref": "meta.schema.json#/definitions/combinedMeta"
+                    }
+                },
+                "anyOf": [
+                    {
+                        "required": [
+                            "downloads"
+                        ]
+                    },
+                    {
+                        "required": [
+                            "local"
+                        ]
+                    }
+                ],
+                "oneOf": [
+                    {
+                        "properties": {
+                            "fileType": {
+                                "const": "versionJson"
+                            }
+                        }
+                    },
+                    {
+                        "properties": {
+                            "fileType": {
+                                "const": "jarmod"
+                            }
+                        }
+                    },
+                    {
+                        "required": [
+                            "path"
+                        ],
+                        "properties": {
+                            "fileType": {
+                                "const": "raw"
+                            },
+                            "path": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                ]
+            }
+        },
+        "groups": {
+            "type": "object",
+            "additionalProperties": {
+                "type": "object",
+                "required": [
+                    "name"
+                ],
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "overrides": {
+                        "type": "string"
+                    },
+                    "env": {
+                        "$ref": "#/definitions/env"
+                    },
+                    "conflicts": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "requires": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "meta": {
+            "$ref": "meta.schema.json#/definitions/combinedMeta"
+        },
+        "config": {
+            "type": "object",
+            "properties": {
+                "ram": {
+                    "type": "object",
+                    "properties": {
+                        "min": {
+                            "type": "number",
+                            "description": "Minimum number of gigabytes of RAM required (inclusive)"
+                        },
+                        "max": {
+                            "type": "number",
+                            "description": "Maximum number of gigabytes of RAM required (inclusive)"
+                        }
+                    }
+                },
+                "java": {
+                    "type": "object",
+                    "properties": {
+                        "min": {
+                            "type": "integer",
+                            "description": "Minimum Java version allowed (inclusive)"
+                        },
+                        "max": {
+                            "type": "integer",
+                            "description": "Maximum Java version allowed (inclusive)"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

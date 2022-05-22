@@ -1,0 +1,105 @@
+{
+    "$schema": "../../schema/pack.schema.json",
+    "formatType": "omf:pack",
+    "formatVersion": 0,
+    "meta": {
+        "omf:project.src": "https://api.example.com/omf/example-pack.omf.json",
+        "omf:version.src": "https://api.example.com/omf/example-pack/1.0.omf.json",
+        "omf:project.name": "Example modpack",
+        "omf:version.name": "Release 1.0 for Minecraft 1.18",
+        "omf:version.id": "1"
+    },
+    "components": {
+        "minecraft": "1.18.2",
+        "fabric-loader": "0.10.2"
+    },
+    "files": [
+        {
+            "fileType": "versionJson",
+            "id": "my-custom-loader",
+            "downloads": [
+                "https://example.com/my-custom-loader.json"
+            ],
+            "local": "my-custom-loader.json",
+            "hashes": {
+                "sha512": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+            },
+            "fileSize": 1
+        },
+        {
+            "fileType": "jarmod",
+            "id": "myjarmod",
+            "downloads": [
+                "https://example.com/myjarmod.zip"
+            ],
+            "hashes": {
+                "sha1": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+            },
+            "fileSize": 1
+        },
+        {
+            "fileType": "raw",
+            "id": "mymod",
+            "path": "mods/mymod.jar",
+            "downloads": [
+                "https://example.com/mymod.jar"
+            ],
+            "hashes": {
+                "sha1": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+            },
+            "fileSize": 123,
+            "groups": [
+                "group-three"
+            ],
+            "env": {
+                "client": "optional",
+                "server": "disallowed"
+            },
+            "meta": {
+                "omf:project.src": "https://api.example.com/omf/mymod.omf.json",
+                "omf:version.src": "https://api.example.com/omf/mymod/1.0.omf.json",
+                "omf:project.name": "My Mod",
+                "omf:version.id": "1.0",
+                "omf:version.name": "My Version",
+                "fabric-loader:modid": "mymod",
+                "modrinth:id": "ABC123",
+                "modrinth:version": "XYZ789"
+            }
+        }
+    ],
+    "groups": {
+        "group-one": {
+            "name": "Group 1",
+            "description": "This is an example group",
+            "conflicts": [
+                "group-two"
+            ],
+            "requires": [
+                "group-three"
+            ]
+        },
+        "group-two": {
+            "name": "Group 2",
+            "conflicts": [
+                "group-one"
+            ]
+        },
+        "group-three": {
+            "name": "Group 3",
+            "overrides": "my-conditional-overrides",
+            "env": {
+                "client": "required",
+                "server": "disallowed"
+            }
+        }
+    },
+    "config": {
+        "ram": {
+            "min": 2,
+            "max": 3
+        },
+        "java": {
+            "min": 8
+        }
+    }
+}

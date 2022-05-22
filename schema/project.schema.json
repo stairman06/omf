@@ -1,0 +1,44 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema",
+    "required": [
+        "formatType",
+        "formatVersion",
+        "versions"
+    ],
+    "properties": {
+        "formatType": {
+            "const": "omf:project"
+        },
+        "formatVersion": {
+            "const": 0
+        },
+        "meta": {
+            "$ref": "meta.schema.json#/definitions/projectMeta"
+        },
+        "versions": {
+            "type": "array",
+            "description": "All versions of the Project",
+            "items": {
+                "type": "object",
+                "required": [
+                    "id",
+                    "src"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "description": "ID of the version"
+                    },
+                    "src": {
+                        "type": "string",
+                        "format": "uri",
+                        "description": "URL where the Version Metadata can be found"
+                    },
+                    "meta": {
+                        "$ref": "meta.schema.json#/definitions/versionMeta"
+                    }
+                }
+            }
+        }
+    }
+}

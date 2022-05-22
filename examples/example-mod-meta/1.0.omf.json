@@ -1,0 +1,35 @@
+{
+    "$schema": "../../schema/version.schema.json",
+    "formatType": "omf:version",
+    "formatVersion": 0,
+    "meta": {
+        "omf:project.src": "https://api.example.com/omf/example-mod.omf.json",
+        "omf:project.type": "mod",
+        "omf:version.id": "1.0",
+        "omf:version.name": "test",
+        "omf:version.components": {
+            "minecraft": "1.18.2",
+            "fabric-loader": "0.10.2"
+        },
+        "omf:version.dependencies": {
+            "fabric-api": {
+                "type": "required"
+            }
+        },
+        "omf:version.changelog": "Added new features"
+    },
+    "files": [
+        {
+            "primary": true,
+            "fileType": "raw",
+            "fileName": "example-mod.jar",
+            "downloads": [
+                "https://cdn.example.com/omf/example-mod.jar"
+            ],
+            "hashes": {
+                "sha512": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+            },
+            "fileSize": 12345
+        }
+    ]
+}

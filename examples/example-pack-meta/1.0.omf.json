@@ -1,0 +1,36 @@
+{
+    "$schema": "../../schema/version.schema.json",
+    "formatType": "omf:version",
+    "formatVersion": 0,
+    "meta": {
+        "omf:project.src": "https://api.example.com/omf/example-pack.omf.json",
+        "omf:project.name": "Example modpack",
+        "omf:version.id": "1.0",
+        "omf:version.name": "test",
+        "omf:version.components": {
+            "minecraft": "1.18.2",
+            "fabric-loader": "0.10.2"
+        },
+        "omf:version.dependencies": {
+            "example-mod": {
+                "type": "required",
+                "meta": {
+                    "omf:project.src": "https://api.example.com/omf/example-mod.omf.json"
+                }
+            }
+        }
+    },
+    "files": [
+        {
+            "primary": true,
+            "fileType": "omfPack",
+            "downloads": [
+                "https://cdn.example.com/omf/example-pack.omfpack"
+            ],
+            "hashes": {
+                "sha1": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+            },
+            "fileSize": 1234
+        }
+    ]
+}
