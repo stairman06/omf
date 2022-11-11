@@ -2,22 +2,15 @@
 OMF Projects allow you to represent metadata for a Minecraft mod or modpack. OMF Projects are a JSON-based format that let you make available as much or as little metadata as necessary. The following are the available properties for this format.
 
 ## `formatType`
-This property MUST be set to `omf:project`
+This property MUST be set to `project`.
 
 ## `formatVersion`
 This property MUST be set to `0`. Future versions will increment this number.
 
 ## `meta` (optional)
-A [Project Metadata Reference](./Metadata_References.md#project-metadata-references) object for this file.
+A [Project Metadata Reference](./Metadata_References.md#project-metadata-references) object for this project.
 
 ## `versions`
-A list of all versions of this Project. Each object in this array contains the following properties
+An array consisting of [Version Metadata References](./Metadata_References.md#version-metadata-references) for every available version of this project.
 
-### `id`
-A unique identifier for this version. This MUST NOT be used for any other version.
-
-### `src`
-A URL which returns Version Metadata for this version
-
-### `meta` (optional)
-A [Version Metadata Reference](./Metadata_References.md#version-metadata-references) object for this version. This allows you to specify things like version name, required components, dependencies, release date, and more.
+Each Version Metadata Reference is required to have the `id` field. It is RECOMMENDED to include the `src` field as well, in order to provide a more permanent source for the version metadata.

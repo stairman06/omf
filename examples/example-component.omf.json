@@ -1,0 +1,66 @@
+{
+    "$schema": "../schema/component.schema.json",
+    "formatType": "component",
+    "formatVersion": 0,
+    "project": {
+        "id": "com.example.Component",
+        "name": "Example Component"
+    },
+    "version": {
+        "components": [
+            {
+                "minecraft": "1.19"
+            }
+        ]
+    },
+    "libraries": {
+        "client": [
+            {
+                "name": "com:example:clientside:1.0",
+                "url": "https://maven.example.com"
+            }
+        ],
+        "common": [
+            {
+                "downloads": {
+                    "artifact": {
+                        "path": "com/example/common/1.0/common-1.0.jar",
+                        "sha1": "sum",
+                        "size": 12345,
+                        "url": "https://example.com/common-1.0.jar"
+                    }
+                },
+                "name": "com:example:common:1.0"
+            }
+        ],
+        "server": []
+    },
+    "arguments": {
+        "jvm": {
+            "client": [],
+            "common": [],
+            "server": []
+        },
+        "game": {
+            "client": [
+                "--demo"
+            ],
+            "common": [],
+            "server": []
+        }
+    },
+    "agents": {
+        "client": [],
+        "common": [
+            {
+                "name": "com:example:agent:1.0",
+                "url": "https://maven.example.com"
+            }
+        ],
+        "server": []
+    },
+    "mainClass": {
+        "client": "com.example.component.Client",
+        "server": "com.example.component.Server"
+    }
+}

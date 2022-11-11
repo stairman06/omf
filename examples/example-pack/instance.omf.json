@@ -1,0 +1,127 @@
+{
+    "$schema": "../../schema/instance.schema.json",
+    "formatType": "instance",
+    "formatVersion": 0,
+    "project": {
+        "id": "com.example.Modpack",
+        "src": "https://api.example.com/omf/example-pack.omf.json",
+        "name": "Example modpack"
+    },
+    "version": {
+        "id": "1.0.0",
+        "src": "https://api.example.com/omf/example-pack/1.0.omf.json",
+        "name": "Release 1.0"
+    },
+    "assets": [
+        {
+            "id": "my-custom-loader",
+            "type": "remote",
+            "env": {
+                "client": "required",
+                "server": "disallowed"
+            },
+            "file": {
+                "type": "versionJson",
+                "downloads": [
+                    "https://example.com/myloader.json"
+                ],
+                "hashes": {
+                    "sha512": "< sum >"
+                },
+                "size": 1
+            }
+        },
+        {
+            "id": "myjarmod",
+            "type": "local",
+            "env": {
+                "client": "required",
+                "server": "required"
+            },
+            "file": {
+                "type": "jarmod",
+                "size": 1
+            }
+        },
+        {
+            "id": "mymod",
+            "type": "remote",
+            "env": {
+                "client": "required",
+                "server": "disallowed"
+            },
+            "file": {
+                "type": "raw",
+                "dest": "mods/mymod.jar",
+                "downloads": [
+                    "https://example.com/mymod.jar"
+                ],
+                "hashes": {
+                    "sha1": "< sum >"
+                },
+                "size": 1
+            },
+            "groups": [
+                "group-three"
+            ],
+            "project": {
+                "id": "com.example.MyMod",
+                "src": "https://api.example.com/omf/mymod.omf.json",
+                "name": "My Mod",
+                "x-fabric": {
+                    "modid": "mymod"
+                },
+                "x-modrinth": {
+                    "id": "ABC123"
+                }
+            },
+            "version": {
+                "id": "1.0",
+                "src": "https://api.example.com/omf/mymod/1.0.omf.json",
+                "name": "Release 1.0",
+                "x-modrinth": {
+                    "id": "XYZ789"
+                }
+            }
+        }
+    ],
+    "groups": {
+        "group-one": {
+            "name": "Group 1",
+            "description": "This is an example group",
+            "conflicts": [
+                "group-two"
+            ],
+            "requires": [
+                "group-three"
+            ]
+        },
+        "group-two": {
+            "name": "Group 2",
+            "conflicts": [
+                "group-one"
+            ]
+        },
+        "group-three": {
+            "name": "Group 3",
+            "overrides": "my-conditional",
+            "env": {
+                "client": "required",
+                "server": "disallowed"
+            }
+        }
+    },
+    "components": {
+        "minecraft": "1.18.2",
+        "fabric-loader": "0.10.2"
+    },
+    "config": {
+        "ram": {
+            "min": 2,
+            "max": 3
+        },
+        "java": {
+            "min": 8
+        }
+    }
+}

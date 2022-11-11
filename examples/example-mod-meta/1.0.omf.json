@@ -1,35 +1,48 @@
 {
     "$schema": "../../schema/version.schema.json",
-    "formatType": "omf:version",
+    "formatType": "version",
     "formatVersion": 0,
+    "project": {
+        "src": "https://api.example.com/omf/example-mod.omf.json"
+    },
     "meta": {
-        "omf:project.src": "https://api.example.com/omf/example-mod.omf.json",
-        "omf:project.type": "mod",
-        "omf:version.id": "1.0",
-        "omf:version.name": "test",
-        "omf:version.components": {
-            "minecraft": "1.18.2",
-            "fabric-loader": "0.10.2"
-        },
-        "omf:version.dependencies": {
-            "fabric-api": {
-                "type": "required"
+        "id": "1.0",
+        "name": "test",
+        "components": [
+            {
+                "minecraft": [
+                    "1.18.2",
+                    "1.18.1",
+                    "1.18"
+                ],
+                "fabric-loader": "0.10.2"
             }
-        },
-        "omf:version.changelog": "Added new features"
+        ],
+        "relations": [
+            {
+                "type": "requires",
+                "project": {
+                    "id": "net.fabricmc.fabric",
+                    "name": "Fabric API",
+                    "x-fabric": {
+                        "modid": "fabric"
+                    }
+                }
+            }
+        ]
     },
     "files": [
         {
             "primary": true,
-            "fileType": "raw",
-            "fileName": "example-mod.jar",
+            "type": "raw",
+            "dest": "mods/example-mod.jar",
             "downloads": [
                 "https://cdn.example.com/omf/example-mod.jar"
             ],
             "hashes": {
-                "sha512": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+                "sha512": "< sum >"
             },
-            "fileSize": 12345
+            "size": 12345
         }
     ]
 }

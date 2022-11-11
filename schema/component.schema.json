@@ -1,0 +1,233 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema",
+    "definitions": {
+        "mojangRule": {
+            "type": "object",
+            "required": [
+                "action"
+            ],
+            "properties": {
+                "action": {
+                    "const": "allow"
+                },
+                "os": {
+                    "type": "object",
+                    "properties": {
+                        "name": {
+                            "type": "string"
+                        },
+                        "version": {
+                            "type": "string"
+                        },
+                        "arch": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "features": {
+                    "type": "object",
+                    "properties": {
+                        "is_demo_user": {
+                            "type": "boolean"
+                        },
+                        "has_custom_resolution": {
+                            "type": "boolean"
+                        }
+                    }
+                }
+            }
+        },
+        "mojangMavenLibrary": {
+            "type": "object",
+            "oneOf": [
+                {
+                    "required": [
+                        "name",
+                        "url"
+                    ]
+                },
+                {
+                    "required": [
+                        "name",
+                        "downloads"
+                    ]
+                }
+            ],
+            "properties": {
+                "url": {
+                    "type": "string",
+                    "format": "uri"
+                },
+                "downloads": {
+                    "type": "object",
+                    "required": [
+                        "artifact"
+                    ],
+                    "additionalProperties": {
+                        "type": "object",
+                        "required": [
+                            "path",
+                            "sha1",
+                            "size",
+                            "url"
+                        ],
+                        "properties": {
+                            "path": {
+                                "type": "string"
+                            },
+                            "sha1": {
+                                "type": "string"
+                            },
+                            "size": {
+                                "type": "integer"
+                            },
+                            "url": {
+                                "type": "string",
+                                "format": "uri"
+                            }
+                        }
+                    }
+                },
+                "extract": {
+                    "type": "object",
+                    "required": [
+                        "exclude"
+                    ],
+                    "properties": {
+                        "exclude": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                },
+                "natives": {
+                    "type": "object",
+                    "patternProperties": {
+                        "osx|windows|linux": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "rules": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/mojangRule"
+                    }
+                }
+            }
+        },
+        "mojangArgument": {
+            "oneOf": [
+                {
+                    "type": "string"
+                },
+                {
+                    "type": "object",
+                    "required": [
+                        "value"
+                    ],
+                    "properties": {
+                        "rules": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/mojangRule"
+                            }
+                        },
+                        "value": {
+                            "type": "string"
+                        }
+                    }
+                }
+            ]
+        }
+    },
+    "required": [
+        "formatType",
+        "formatVersion"
+    ],
+    "properties": {
+        "formatType": {
+            "const": "component"
+        },
+        "formatVersion": {
+            "const": 0
+        },
+        "project": {
+            "$ref": "meta.schema.json#/definitions/projectMeta"
+        },
+        "version": {
+            "$ref": "meta.schema.json#/definitions/versionMeta"
+        },
+        "libraries": {
+            "type": "object",
+            "required": [
+                "client",
+                "common",
+                "server"
+            ],
+            "patternProperties": {
+                "client|common|server": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/mojangMavenLibrary"
+                    }
+                }
+            }
+        },
+        "arguments": {
+            "type": "object",
+            "required": [
+                "jvm",
+                "game"
+            ],
+            "patternProperties": {
+                "jvm|game": {
+                    "type": "object",
+                    "required": [
+                        "client",
+                        "common",
+                        "server"
+                    ],
+                    "patternProperties": {
+                        "client|common|server": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/mojangArgument"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "agents": {
+            "type": "object",
+            "required": [
+                "client",
+                "common",
+                "server"
+            ],
+            "patternProperties": {
+                "client|common|server": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/mojangMavenLibrary"
+                    }
+                }
+            }
+        },
+        "mainClass": {
+            "type": "object",
+            "required": [
+                "client",
+                "server"
+            ],
+            "patternProperties": {
+                "client|server": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}

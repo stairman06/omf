@@ -1,169 +1,234 @@
 {
     "$schema": "http://json-schema.org/draft-07/schema",
     "definitions": {
+        "env": {
+            "type": "object",
+            "required": [
+                "client",
+                "server"
+            ],
+            "properties": {
+                "client": {
+                    "enum": [
+                        "required",
+                        "optional",
+                        "disallowed"
+                    ]
+                },
+                "server": {
+                    "enum": [
+                        "required",
+                        "optional",
+                        "disallowed"
+                    ]
+                }
+            }
+        },
         "projectMeta": {
             "type": "object",
             "description": "Project Metadata Reference",
-            "propertyNames": {
-                "$comment": "Regex bans any Version metadata",
-                "pattern": "^(?!omf:version\\.).*$"
-            },
-            "$ref": "#/definitions/projectMetaProperties"
-        },
-        "projectMetaProperties": {
             "properties": {
-                "omf:project.src": {
+                "id": {
+                    "type": "string"
+                },
+                "src": {
                     "type": "string",
-                    "format": "uri",
-                    "description": "URL where the Project Metadata can be found"
+                    "format": "uri"
                 },
-                "omf:project.id": {
+                "name": {
+                    "type": "string"
+                },
+                "summary": {
+                    "type": "string"
+                },
+                "icon": {
                     "type": "string",
-                    "description": "ID of the Project"
+                    "format": "uri"
                 },
-                "omf:project.name": {
+                "releaseDate": {
                     "type": "string",
-                    "description": "Name of the Project"
-                },
-                "omf:project.type": {
-                    "description": "Type of the Project",
-                    "enum": [
-                        "mod",
-                        "pack"
-                    ]
-                },
-                "omf:project.releaseDate": {
-                    "type": "integer",
-                    "description": "Unix timestamp for when the Project was initially released"
-                },
-                "omf:project.summary": {
-                    "type": "string",
-                    "description": "Short summary of the Project"
+                    "format": "date-time"
                 }
             }
+        },
+        "versionComponentSelector": {
+            "description": "Version of the component",
+            "oneOf": [
+                {
+                    "type": "string"
+                },
+                {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            ]
         },
         "versionMeta": {
             "type": "object",
             "description": "Version Metadata Reference",
-            "propertyNames": {
-                "$comment": "Regex bans any Project metadata",
-                "pattern": "^(?!omf:project\\.).*$"
-            },
-            "$ref": "#/definitions/versionMetaProperties"
-        },
-        "versionMetaProperties": {
             "properties": {
-                "omf:version.src": {
-                    "type": "string",
-                    "format": "uri",
-                    "description": "URL where the Version Metadata can be found"
+                "id": {
+                    "type": "string"
                 },
-                "omf:version.id": {
+                "src": {
                     "type": "string",
-                    "description": "ID of the Version"
+                    "format": "uri"
                 },
-                "omf:version.name": {
+                "name": {
+                    "type": "string"
+                },
+                "releaseDate": {
                     "type": "string",
-                    "description": "Name of the Version"
+                    "format": "date-time"
                 },
-                "omf:version.components": {
-                    "type": "object",
-                    "description": "Required components for the Version",
-                    "properties": {
-                        "minecraft": {
-                            "type": "string",
-                            "description": "Version of Minecraft"
-                        },
-                        "forge": {
-                            "type": "string",
-                            "description": "Version of Minecraft Forge"
-                        },
-                        "fabric-loader": {
-                            "type": "string",
-                            "description": "Version of Fabric Loader"
-                        },
-                        "quilt-loader": {
-                            "type": "string",
-                            "description": "Version of Quilt Loader"
+                "components": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "minecraft": {
+                                "$ref": "#/definitions/versionComponentSelector"
+                            },
+                            "fabric-loader": {
+                                "$ref": "#/definitions/versionComponentSelector"
+                            },
+                            "forge": {
+                                "$ref": "#/definitions/versionComponentSelector"
+                            },
+                            "quilt-loader": {
+                                "$ref": "#/definitions/versionComponentSelector"
+                            }
                         }
                     }
                 },
-                "omf:version.dependencies": {
-                    "type": "object",
-                    "description": "Required dependencies for the Version",
-                    "additionalProperties": {
+                "relations": {
+                    "type": "array",
+                    "items": {
                         "type": "object",
                         "required": [
                             "type"
                         ],
                         "properties": {
                             "type": {
-                                "description": "Type of this dependency",
                                 "enum": [
-                                    "required",
-                                    "optional"
+                                    "requires",
+                                    "conflicts",
+                                    "recommends",
+                                    "embeds"
                                 ]
                             },
-                            "meta": {
-                                "type": "object",
-                                "ref": "#/definitions/combinedMeta"
+                            "project": {
+                                "$ref": "#/definitions/projectMeta"
+                            },
+                            "version": {
+                                "$ref": "#/definitions/versionMeta"
                             }
                         }
                     }
-                },
-                "omf:version.releaseDate": {
-                    "type": "integer",
-                    "description": "Unix timestamp for when the Version was released"
-                },
-                "omf:version.changelog": {
-                    "type": "string",
-                    "description": "Changelog for the Version"
                 }
             }
         },
-        "combinedMeta": {
-            "type": "object",
-            "description": "Combined Metadata Reference",
-            "allOf": [
-                {
-                    "$ref": "#/definitions/projectMetaProperties"
-                },
-                {
-                    "$ref": "#/definitions/versionMetaProperties"
-                }
-            ]
-        },
-        "hashes": {
-            "type": "object",
-            "anyOf": [
-                {
-                    "required": [
-                        "sha1"
+        "fileMeta": {
+            "properties": {
+                "type": {
+                    "enum": [
+                        "raw",
+                        "jarmod",
+                        "versionJson",
+                        "instance"
                     ]
                 },
+                "downloads": {
+                    "type": "array",
+                    "items": {
+                        "type": "string",
+                        "format": "uri"
+                    }
+                },
+                "hashes": {
+                    "type": "object",
+                    "properties": {
+                        "sha1": {
+                            "type": "string"
+                        },
+                        "sha256": {
+                            "type": "string"
+                        },
+                        "sha512": {
+                            "type": "string"
+                        }
+                    },
+                    "anyOf": [
+                        {
+                            "required": [
+                                "sha1"
+                            ]
+                        },
+                        {
+                            "required": [
+                                "sha256"
+                            ]
+                        },
+                        {
+                            "required": [
+                                "sha512"
+                            ]
+                        }
+                    ]
+                },
+                "size": {
+                    "type": "number"
+                }
+            },
+            "oneOf": [
+                {
+                    "not": {
+                        "required": [
+                            "downloads"
+                        ]
+                    }
+                },
                 {
                     "required": [
-                        "sha512"
+                        "downloads",
+                        "hashes"
                     ]
                 }
             ],
-            "properties": {
-                "sha1": {
-                    "description": "SHA1 hash",
-                    "minLength": 40,
-                    "maxLength": 40
+            "anyOf": [
+                {
+                    "required": [
+                        "type",
+                        "dest"
+                    ],
+                    "properties": {
+                        "type": {
+                            "const": "raw"
+                        },
+                        "dest": {
+                            "type": "string"
+                        }
+                    }
                 },
-                "sha512": {
-                    "description": "SHA512 hash",
-                    "maxLength": 128,
-                    "minLength": 128
+                {
+                    "properties": {
+                        "type": {
+                            "enum": [
+                                "jarmod",
+                                "versionJson"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "required": [
+                        "downloads",
+                        "hashes"
+                    ]
                 }
-            }
-        },
-        "fileSize": {
-            "type": "integer",
-            "description": "Size of this file",
-            "minimum": 1
+            ]
         }
     }
 }

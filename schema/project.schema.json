@@ -7,7 +7,7 @@
     ],
     "properties": {
         "formatType": {
-            "const": "omf:project"
+            "const": "project"
         },
         "formatVersion": {
             "const": 0
@@ -19,25 +19,10 @@
             "type": "array",
             "description": "All versions of the Project",
             "items": {
-                "type": "object",
+                "$ref": "meta.schema.json#/definitions/versionMeta",
                 "required": [
-                    "id",
-                    "src"
-                ],
-                "properties": {
-                    "id": {
-                        "type": "string",
-                        "description": "ID of the version"
-                    },
-                    "src": {
-                        "type": "string",
-                        "format": "uri",
-                        "description": "URL where the Version Metadata can be found"
-                    },
-                    "meta": {
-                        "$ref": "meta.schema.json#/definitions/versionMeta"
-                    }
-                }
+                    "id"
+                ]
             }
         }
     }

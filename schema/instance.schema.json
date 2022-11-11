@@ -4,142 +4,71 @@
         "formatType",
         "formatVersion"
     ],
-    "definitions": {
-        "env": {
-            "type": "object",
-            "description": "Environment where this can be used",
-            "required": [
-                "client",
-                "server"
-            ],
-            "properties": {
-                "client": {
-                    "description": "Client side",
-                    "$ref": "#/definitions/envValue"
-                },
-                "server": {
-                    "description": "Server side",
-                    "$ref": "#/definitions/envValue"
-                }
-            }
-        },
-        "envValue": {
-            "enum": [
-                "required",
-                "optional",
-                "disallowed"
-            ]
-        }
-    },
     "properties": {
         "formatType": {
-            "const": "omf:pack"
+            "const": "instance"
         },
         "formatVersion": {
             "const": 0
         },
-        "components": {
-            "type": "object",
-            "description": "Required components for the Pack",
-            "required": [
-                "minecraft"
-            ],
-            "properties": {
-                "minecraft": {
-                    "description": "Version of Minecraft"
-                },
-                "forge": {
-                    "description": "Version of Minecraft Forge"
-                },
-                "fabric-loader": {
-                    "description": "Version of Fabric Loader"
-                },
-                "quilt-loader": {
-                    "description": "Version of Quilt Loader"
-                }
-            }
+        "project": {
+            "$ref": "meta.schema.json#/definitions/projectMeta"
         },
-        "files": {
+        "version": {
+            "$ref": "meta.schema.json#/definitions/versionMeta"
+        },
+        "assets": {
             "type": "array",
             "items": {
                 "type": "object",
                 "required": [
-                    "fileType",
                     "id",
-                    "hashes",
-                    "fileSize"
+                    "type",
+                    "env",
+                    "file"
                 ],
                 "properties": {
                     "id": {
                         "type": "string"
                     },
-                    "downloads": {
-                        "type": "array",
-                        "items": {
-                            "type": "string",
-                            "format": "uri"
-                        },
-                        "minItems": 1
-                    },
-                    "local": {
-                        "type": "string"
-                    },
-                    "hashes": {
-                        "$ref": "meta.schema.json#/definitions/hashes"
-                    },
-                    "fileSize": {
-                        "$ref": "meta.schema.json#/definitions/fileSize"
+                    "type": {
+                        "enum": [
+                            "local",
+                            "remote"
+                        ]
                     },
                     "env": {
-                        "$ref": "#/definitions/env"
+                        "$ref": "meta.schema.json#/definitions/env"
+                    },
+                    "file": {
+                        "$ref": "meta.schema.json#/definitions/fileMeta"
                     },
                     "groups": {
                         "type": "array",
                         "items": {
                             "type": "string"
                         }
-                    },
-                    "meta": {
-                        "$ref": "meta.schema.json#/definitions/combinedMeta"
                     }
                 },
-                "anyOf": [
-                    {
-                        "required": [
-                            "downloads"
-                        ]
-                    },
-                    {
-                        "required": [
-                            "local"
-                        ]
-                    }
-                ],
                 "oneOf": [
                     {
                         "properties": {
-                            "fileType": {
-                                "const": "versionJson"
+                            "type": {
+                                "const": "local"
                             }
                         }
                     },
                     {
                         "properties": {
-                            "fileType": {
-                                "const": "jarmod"
-                            }
-                        }
-                    },
-                    {
-                        "required": [
-                            "path"
-                        ],
-                        "properties": {
-                            "fileType": {
-                                "const": "raw"
+                            "type": {
+                                "const": "remote"
                             },
-                            "path": {
-                                "type": "string"
+                            "file": {
+                                "required": [
+                                    "downloads",
+                                    "hashes",
+                                    "size"
+                                ]
                             }
                         }
                     }
@@ -164,7 +93,7 @@
                         "type": "string"
                     },
                     "env": {
-                        "$ref": "#/definitions/env"
+                        "$ref": "meta.schema.json#/definitions/env"
                     },
                     "conflicts": {
                         "type": "array",
@@ -181,8 +110,26 @@
                 }
             }
         },
-        "meta": {
-            "$ref": "meta.schema.json#/definitions/combinedMeta"
+        "components": {
+            "type": "object",
+            "description": "Required components for the Pack",
+            "required": [
+                "minecraft"
+            ],
+            "properties": {
+                "minecraft": {
+                    "description": "Version of Minecraft"
+                },
+                "forge": {
+                    "description": "Version of Minecraft Forge"
+                },
+                "fabric-loader": {
+                    "description": "Version of Fabric Loader"
+                },
+                "quilt-loader": {
+                    "description": "Version of Quilt Loader"
+                }
+            }
         },
         "config": {
             "type": "object",

@@ -6,78 +6,24 @@
     ],
     "properties": {
         "formatType": {
-            "const": "omf:version"
+            "const": "version"
         },
         "formatVersion": {
             "const": 0
         },
+        "project": {
+            "$ref": "meta.schema.json#/definitions/projectMeta"
+        },
         "meta": {
-            "$ref": "meta.schema.json#/definitions/combinedMeta"
+            "$ref": "meta.schema.json#/definitions/versionMeta"
         },
         "files": {
             "type": "array",
             "description": "Files in this Version",
             "items": {
-                "type": "object",
+                "$ref": "meta.schema.json#/definitions/fileMeta",
                 "required": [
-                    "fileType",
-                    "downloads",
-                    "hashes",
-                    "fileSize"
-                ],
-                "properties": {
-                    "primary": {
-                        "type": "boolean"
-                    },
-                    "downloads": {
-                        "type": "array",
-                        "description": "URLs where this file can be downloaded",
-                        "items": {
-                            "type": "string",
-                            "format": "uri"
-                        },
-                        "minItems": 1
-                    },
-                    "hashes": {
-                        "$ref": "meta.schema.json#/definitions/hashes"
-                    },
-                    "fileSize": {
-                        "$ref": "meta.schema.json#/definitions/fileSize"
-                    }
-                },
-                "oneOf": [
-                    {
-                        "properties": {
-                            "fileType": {
-                                "const": "raw"
-                            },
-                            "fileName": {
-                                "type": "string",
-                                "description": "Name of this file"
-                            }
-                        }
-                    },
-                    {
-                        "properties": {
-                            "fileType": {
-                                "const": "jarmod"
-                            }
-                        }
-                    },
-                    {
-                        "properties": {
-                            "fileType": {
-                                "const": "versionJson"
-                            }
-                        }
-                    },
-                    {
-                        "properties": {
-                            "fileType": {
-                                "const": "omfPack"
-                            }
-                        }
-                    }
+                    "type"
                 ]
             }
         }

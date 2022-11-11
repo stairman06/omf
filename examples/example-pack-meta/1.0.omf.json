@@ -1,36 +1,40 @@
 {
     "$schema": "../../schema/version.schema.json",
-    "formatType": "omf:version",
+    "formatType": "version",
     "formatVersion": 0,
+    "project": {
+        "src": "https://api.example.com/omf/example-pack.omf.json",
+        "name": "Example Modpack"
+    },
     "meta": {
-        "omf:project.src": "https://api.example.com/omf/example-pack.omf.json",
-        "omf:project.name": "Example modpack",
-        "omf:version.id": "1.0",
-        "omf:version.name": "test",
-        "omf:version.components": {
-            "minecraft": "1.18.2",
-            "fabric-loader": "0.10.2"
-        },
-        "omf:version.dependencies": {
-            "example-mod": {
-                "type": "required",
-                "meta": {
-                    "omf:project.src": "https://api.example.com/omf/example-mod.omf.json"
+        "id": "1.0",
+        "name": "test",
+        "components": [
+            {
+                "minecraft": "1.18.2",
+                "fabric-loader": "0.10.2"
+            }
+        ],
+        "relations": [
+            {
+                "type": "embeds",
+                "project": {
+                    "src": "https://api.example.com/omf/example-mod.omf.json"
                 }
             }
-        }
+        ]
     },
     "files": [
         {
             "primary": true,
-            "fileType": "omfPack",
+            "type": "instance",
             "downloads": [
-                "https://cdn.example.com/omf/example-pack.omfpack"
+                "https://cdn.example.com/omf/example-pack.omfinstance"
             ],
             "hashes": {
-                "sha1": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+                "sha1": "< sum >"
             },
-            "fileSize": 1234
+            "size": 1234
         }
     ]
 }
